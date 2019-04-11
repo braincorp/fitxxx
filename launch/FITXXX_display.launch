@@ -1,0 +1,19 @@
+<launch>
+  <arg name="rvizconfig" default="$(find fitxxx)/rviz/laser.rviz" />
+  
+  <node pkg="fitxxx" name="fitxxx" type="FITXXX_ros_node" output="screen">
+    <param name="host_ip" value="192.168.1.201" />
+    <param name="port" value="2112" />
+
+    <param name="scan_range_min" value="0" />
+    <param name="scan_range_max" value="100" />
+
+    <param name="angle_min" value="-2.356" />
+    <param name="angle_max" value="2.356" />
+
+    <param name="frame" value="laser" />
+  </node>
+  
+  <node pkg="rviz" name="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+</launch>

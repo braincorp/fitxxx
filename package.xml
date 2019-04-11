@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>fitxxx</name>
+  <version>0.0.1</version>
+  <description>ROS driver for fitxxx laser.</description>
+  <author>Zhigang Wu</author>
+  <maintainer email="wzg201@163.com">Zhigang Wu</maintainer>
+  <url type="website">http://</url>
+
+  <license>None</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rosconsole_bridge</depend>
+  <depend>roscpp</depend>
+  <depend>roscpp_serialization</depend>
+  <depend>sensor_msgs</depend>
+
+  <test_depend>roslaunch</test_depend>
+  <test_depend>roslint</test_depend>
+  <test_depend>rosunit</test_depend>
+</package>
