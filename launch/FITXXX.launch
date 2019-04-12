@@ -1,7 +1,7 @@
 <launch>
 
   <node pkg="fitxxx" name="fitxxx" type="FITXXX_ros_node" output="screen">
-    <param name="host_ip" value="192.168.1.201" />
+    <param name="host_ip" value="192.168.3.2" />
     <param name="port" value="2112" />
 
     <param name="scan_range_min" value="0" />
