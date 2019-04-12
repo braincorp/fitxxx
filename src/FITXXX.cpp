@@ -21,7 +21,7 @@
 #include "FITXXX/FITXXX.h"
 #include "console_bridge/console.h"
 
-FITXXX::FITXXX() 
+FITXXX::FITXXX()
 : connected_(false)
 , loaded_config_(false)
 {
@@ -29,6 +29,12 @@ FITXXX::FITXXX()
 
 FITXXX::~FITXXX()
 {
+}
+
+void FITXXX::setScanAngles(double angle_min, double angle_max)
+{
+  angle_min_ = angle_min;
+  angle_max_ = angle_max;
 }
 
 void FITXXX::connect(std::string host_ip, int port)
@@ -115,12 +121,21 @@ bool FITXXX::LIM_CODE_LMD_Decoding(LIM_HEAD* lim, sensor_msgs::LaserScan *scan_d
   LMD_INFO* lmd_info = LMD_Info(lim); 
   LMD_D_Type* lmd = LMD_D(lim);  
 
-  scan_data->angle_increment = lmd_info->nAnglePrecision *M_PI / (1000.*180);
-  scan_data->ranges.resize(lmd_info->nMDataNum);
+  float angleIncrement = lmd_info->nAnglePrecision / 1000.;
+  scan_data->angle_increment = angleIncrement * (M_PI / 180);
 
-  for(int i=0; i<lmd_info->nMDataNum; i++)
+  float startAngle = (angle_min_ * 180. / M_PI) + 90;
+  startAngle -= lmd_info->nBAngle / 1000;
+  int startAngleIndex = startAngle / angleIncrement;
+
+  float endAngle= lmd_info->nEAngle / 1000;
+  endAngle-= (angle_max_ * 180. / M_PI) + 90;
+  int endAngleIndex = lmd_info->nMDataNum - (endAngle / angleIncrement);
+
+  scan_data->ranges.resize(endAngleIndex - startAngleIndex);
+  for(int i=0, j=startAngleIndex; j<endAngleIndex; i++, j++)
   {
-    scan_data->ranges[i] = lmd[i]/100.;
+    scan_data->ranges[i] = lmd[j]/100.;
 	if(scan_data->ranges[i] > scan_data->range_max)
     {
       scan_data->ranges[i] = 0;

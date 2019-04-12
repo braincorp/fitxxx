@@ -17,6 +17,9 @@ public:
   FITXXX();
   virtual ~FITXXX();
 
+  // configure the min and max scan angles
+  void setScanAngles(double, double);
+
   // connect laser at certain port
   void connect(std::string host_ip, int port);
 
@@ -57,6 +60,8 @@ protected:
   bool loaded_config_;
   LIMBuffer buffer_;
   int socket_fd_;
+  double angle_min_;
+  double angle_max_;
 };
 
 #endif

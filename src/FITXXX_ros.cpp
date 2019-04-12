@@ -82,7 +82,7 @@ FITXXX_ros_node::FITXXX_ros_node()
   // parameters
   ros::param::get("/fitxxx/scan_range_min", scan_range_min_);
   ros::param::get("/fitxxx/scan_range_max", scan_range_max_);
-  
+
   ros::param::get("/fitxxx/angle_min", angle_min_);
   ros::param::get("/fitxxx/angle_max", angle_max_);
 
@@ -91,6 +91,7 @@ FITXXX_ros_node::FITXXX_ros_node()
   ros::param::get("/fitxxx/host_ip", host_ip_);
   ros::param::get("/fitxxx/port", port_);
 
+  laser.setScanAngles(angle_min_, angle_max_);
   
   // subscribers
 
@@ -117,13 +118,13 @@ void FITXXX_ros_node::initialize_scan_param()
     scan_msg_.header.frame_id = frame_id_;
     scan_msg_.range_min = 0;
     scan_msg_.range_max = uld_config_.nMR/ 100.;
-    scan_msg_.angle_min = (uld_config_.nSA[0]-90) /(180.)*M_PI;
-    scan_msg_.angle_max = (uld_config_.nSA[1]-90) /(180.)*M_PI;
+    scan_msg_.angle_min = angle_min_;
+    scan_msg_.angle_max = angle_max_;
 
     ROS_INFO("scan_range_min: %f", scan_msg_.range_min);
     ROS_INFO("scan_range_max: %f", scan_msg_.range_max);
-    ROS_INFO("scan_angle_min: %f", scan_msg_.angle_min);
-    ROS_INFO("scan_angle_max: %f", scan_msg_.angle_max);
+    ROS_INFO("angle_min: %f", scan_msg_.angle_min);
+    ROS_INFO("angle_max: %f", scan_msg_.angle_max);
     ROS_INFO("lase RPM: %d", uld_config_.nSAV);
     ROS_INFO("lase nSAP: %d", uld_config_.nSAP);  
     ROS_INFO("lase nPF: %d", uld_config_.nPF);  
@@ -277,5 +278,3 @@ int main(int argc, char **argv)
   }
   return 0;
 }
-
-
